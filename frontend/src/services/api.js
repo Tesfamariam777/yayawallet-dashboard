@@ -1,5 +1,4 @@
-//const API_BASE = import.meta.env.VITE_APP_USE_MOCK_API ? (import.meta.env.VITE_APP_USE_MOCK_API) : import.meta.env.VITE_APP_API_BASE;
-const API_BASE = 'http://localhost:5000/api/mock';
+const API_BASE = import.meta.env.VITE_APP_USE_MOCK_API ? (import.meta.env.VITE_APP_API_BASE_MOCK) : import.meta.env.VITE_APP_API_BASE;
 class ApiError extends Error {
   constructor(message, statusCode, responseData) {
     super(message);
@@ -61,7 +60,9 @@ export class ApiService {
   }
 
   async getTransactions(page = 1) {
-    return this.request(`/transactions?pageSize=${page}`);
+    // return this.request(`/transactions?page=${page}`);
+    //for mock API testing
+    return this.request(`/transactions?page=${page}pageSize=10`);;
   }
 
   async searchTransactions(searchParams) {

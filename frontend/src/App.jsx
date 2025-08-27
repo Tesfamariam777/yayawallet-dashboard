@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { TransactionTable } from './components/TransactionTable';
 import { SearchBar } from './components/SearchBar';
 import { Pagination } from './components/Pagination';
@@ -22,34 +21,31 @@ function App() {
     refetch,
   } = useTransactions();
 
-  const [showHelp, setShowHelp] = useState(false);
-
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 flex flex-col">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="container-responsive py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-red-900">YaYa Wallet Dashboard</h1>
-                <p className="text-sm text-gray-600">Monitor your transactions</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-red-900">
+                  YaYa Wallet Dashboard
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Monitor your transactions
+                </p>
               </div>
-              
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setShowHelp(!showHelp)}
-                  className="text-gray-500 hover:text-gray-700 text-sm font-medium"
-                >
-                  {showHelp ? 'Hide Help' : 'Show Help'}
-                </button>
-                
+
+              <div className="flex items-center sm:justify-end gap-2 sm:gap-4">
                 <button
                   onClick={refetch}
                   disabled={loading}
-                  className="btn-secondary flex items-center text-sm"
+                  className="btn-secondary flex items-center text-sm px-3 py-2"
                 >
-                  <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                  <RefreshCw
+                    className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`}
+                  />
                   Refresh
                 </button>
               </div>
@@ -57,50 +53,21 @@ function App() {
           </div>
         </header>
 
-        {/* Help Section */}
-        {showHelp && (
-          <div className="bg-blue-50 border-b border-blue-200">
-            <div className="container-responsive py-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="font-semibold text-blue-900 mb-2">How to Use</h3>
-                  <ul className="text-sm text-blue-800 space-y-1">
-                    <li>• Use the search bar to find transactions by any field</li>
-                    <li>• Click column headers to sort (desktop)</li>
-                    <li>• Use pagination to navigate through results</li>
-                    <li>• Green rows indicate incoming transactions</li>
-                    <li>• Red rows indicate outgoing transactions</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-blue-900 mb-2">Testing</h3>
-                  <ul className="text-sm text-blue-800 space-y-1">
-                    <li>• Backend: http://localhost:5000</li>
-                    <li>• API endpoints: /api/transactions</li>
-                    <li>• Mock API endpoints: /api/mock/transactions</li>
-                    <li>• Health check: /api/transactions/health</li>
-                    <li>• Mock data available if API is unavailable</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Main Content */}
-        <main className="container-responsive py-8">
+        <main className="container-responsive py-6 flex-1">
           {/* Search Section */}
-          <div className="mb-8">
+          <div className="mb-6">
             <SearchBar
               onSearch={search}
               loading={loading}
               currentQuery={searchQuery}
             />
-            
+
             {searchResults && (
-              <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  Found {searchResults.transactions.length} results for "{searchQuery}"
+              <div className="mt-3 p-3 sm:p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800 break-words">
+                  Found {searchResults.transactions.length} results for "
+                  {searchQuery}"
                   {searchResults.searchMetadata?.message && (
                     <span className="block mt-1 text-blue-700">
                       {searchResults.searchMetadata.message}
@@ -112,57 +79,41 @@ function App() {
           </div>
 
           {/* Transactions Section */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+          <div className="mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                 Transactions {searchQuery && `(Search: "${searchQuery}")`}
               </h2>
-              <span className="text-sm text-gray-500">
+              <span className="text-xs sm:text-sm text-gray-500">
                 Page {currentPage} of {totalPages}
               </span>
             </div>
 
-            <TransactionTable
-              transactions={transactions}
-              loading={loading}
-              error={error}
-              onRefresh={refetch}
-            />
+            <div className="overflow-x-auto">
+              <TransactionTable
+                transactions={transactions}
+                loading={loading}
+                error={error}
+                onRefresh={refetch}
+              />
+            </div>
           </div>
 
           {/* Pagination */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setPage}
-            loading={loading}
-          />
-
-          {/* Stats Footer */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{transactions.length}</div>
-                <div className="text-sm text-gray-600">Current Transactions</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">{totalPages}</div>
-                <div className="text-sm text-gray-600">Total Pages</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">
-                  {loading ? '...' : 'Online'}
-                </div>
-                <div className="text-sm text-gray-600">API Status</div>
-              </div>
-            </div>
+          <div className="mt-4">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              loading={loading}
+            />
           </div>
         </main>
 
         {/* Footer */}
-        <footer className="bg-white border-t border-gray-200 mt-auto">
+        <footer className="bg-white border-t border-gray-200">
           <div className="container-responsive py-6">
-            <div className="text-center text-sm text-gray-600">
+            <div className="text-center text-xs sm:text-sm text-gray-600">
               <p className="mt-1">&copy; 2024 YaYa Wallet. All rights reserved.</p>
             </div>
           </div>

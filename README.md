@@ -19,7 +19,7 @@ The front end only access the data through the backend proxy
 
 ---
 
-## ⚙️ Backend Details
+##  Backend Details
 
 ### Endpoints
 - `GET /api/transactions?p=1` → Fetch paginated transactions.
@@ -41,7 +41,7 @@ The front end only access the data through the backend proxy
 
 ---
 
-## 🎨 Frontend Details
+## Frontend Details
 
 ### Features
 - Transactions table with Tailwind styling.
@@ -63,10 +63,16 @@ The front end only access the data through the backend proxy
 - Mocked sample transactions from mock backend api response   api/mock.
 - Verified search filters correctly match ID, sender, receiver, or cause.
 - Verified pagination changes pages without reloading.
+.env content for testing
+  VITE_APP_API_BASE=http://localhost:5000/api
+  VITE_APP_API_BASE_MOCK=http://localhost:5000/api/mock
+  VITE_APP_USE_MOCK_API=true
+  VITE_APP_MOCK_API_URL=http://localhost:5000/api/mock
 
+  change VITE_APP_USE_MOCK_API=false if you need to test on actual endpoint
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 ### Backend
 ```bash
@@ -86,7 +92,7 @@ Frontend will run on `http://localhost:3000`
 
 ---
 
-## 🔍 Problem-Solving Approach
+## Problem-Solving Approach
 1. **Understand API requirements**: Carefully read YaYa Wallet’s signing documentation.
 2. **Isolate authentication**: Built a `authUtils` helper.
 3. **Debug signature mismatches**: Iteratively tested timestamp units, endpoint formatting, and secret encoding.
@@ -95,7 +101,7 @@ Frontend will run on `http://localhost:3000`
 
 ---
 
-## ✅ Final Notes
+## Final Notes
 - The solution is modular: frontend and backend can run independently and secured.
 
 
