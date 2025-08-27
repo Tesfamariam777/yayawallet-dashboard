@@ -28,9 +28,9 @@ The front end only access the data through the backend proxy
 ### Authentication & Signing
 - Uses `YAYA-API-KEY`, `YAYA-API-TIMESTAMP`, and `YAYA-API-SIGN` headers.
 - Signature = HMAC-SHA256(secret, prehash), where:
-  ```
+  
   prehash = timestamp + method + endpoint + body
-  ```
+  
 ### Assumptions
 - we don't implemented authentication to the proxy from the client to make things simple
 
@@ -38,6 +38,15 @@ The front end only access the data through the backend proxy
 - Used **Postman** to call backend endpoints.
 - Logged full signing details (timestamp, prehash string, base64 signature) for debugging.
 - Adjusted secret handling and timestamp format until consistent with docs.
+- .env environment variable for testing
+```bash
+BASE_URL=https://sandbox.yayawallet.com
+YAYA_API_KEY='use api key'
+YAYA_API_SECRET='use api secret for signing'
+PORT=5000
+NODE_ENV=development
+USE_MOCK_DATA=true
+```
 
 ---
 
@@ -63,11 +72,13 @@ The front end only access the data through the backend proxy
 - Mocked sample transactions from mock backend api response   api/mock.
 - Verified search filters correctly match ID, sender, receiver, or cause.
 - Verified pagination changes pages without reloading.
-.env content for testing
+- .env content for testing
+  ```bash
   VITE_APP_API_BASE=http://localhost:5000/api
   VITE_APP_API_BASE_MOCK=http://localhost:5000/api/mock
   VITE_APP_USE_MOCK_API=true
   VITE_APP_MOCK_API_URL=http://localhost:5000/api/mock
+  ```
 
   change VITE_APP_USE_MOCK_API=false if you need to test on actual endpoint
 ---
