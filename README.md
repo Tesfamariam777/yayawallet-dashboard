@@ -3,6 +3,10 @@
 ## Overview
 This project implements a **Transaction Dashboard** for the YaYa Wallet API. It has two main parts:
 
+For the security purpose I made the low level YaYa Wallet sandbox API access through the backend proxy
+so all the signing operations made and secret credentials stored on backend not exposed to the client
+The front end only access the data through the backend proxy
+
 1. **Backend (Node.js + Express)**
    - Proxies requests to YaYa Wallet sandbox API.
    - Handles **HMAC-SHA256 signing** of requests as required by YaYa’s authentication scheme.
@@ -27,12 +31,10 @@ This project implements a **Transaction Dashboard** for the YaYa Wallet API. It 
   ```
   prehash = timestamp + method + endpoint + body
   ```
-- **Assumptions:**
-  - Timestamp must be in **microseconds (16 digits)**.
-  - Endpoint for signing uses `/api/en/...` as documented.
-  - Request body must match exactly what is sent (empty string for GET).
+### Assumptions
+- we don't implemented authentication to the proxy from the client to make things simple
 
-### How We Tested
+### How Tested
 - Used **Postman** to call backend endpoints.
 - Logged full signing details (timestamp, prehash string, base64 signature) for debugging.
 - Adjusted secret handling and timestamp format until consistent with docs.
@@ -94,6 +96,6 @@ Frontend will run on `http://localhost:3000`
 ---
 
 ## ✅ Final Notes
-- The solution is modular: frontend and backend can run independently.
+- The solution is modular: frontend and backend can run independently and secured.
 
 
